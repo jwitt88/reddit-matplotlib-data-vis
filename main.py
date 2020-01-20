@@ -1,44 +1,39 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-from sys import argv
 
-script, filename = argv
+list_of_files = [
+'sanantonio-homeless.csv',
+'houston-homeless.csv',
+'dallas-homeless.csv',
+'austin-homeless.csv']
 
-sub = filename.split('-')[0]
-keyword = filename.split('-')[1]
-keyword = keyword.replace('.csv', '')
+meta_df = []
+num_of_posts = []
+avg_score = []
+avg_num_of_comments = []
 
-x_val = []
-y_val = []
+for file in list_of_files:
+    df = pd.read_csv(file)
+    meta_df.append(df)
 
-df = pd.read_csv(filename)
+for i in range(len(meta_df)):
+    num_of_posts.append(len(meta_df[i]))
+    avg_score.append(meta_df[i][' Score'].mean())
+    avg_num_of_comments.append(meta_df[i][' Comments'].mean())
 
-#want to clean these up
-scores = df[' Score'].tolist()
-comments = df[' Comments'].tolist()
-dates = df[' Date'].tolist()
+names = ['SA', 'H', 'D', 'A']
+my_colors = ['black', '#0400ff', '#00b2ff', '#ff7c00']
 
-scores.reverse()
-comments.reverse()
-dates.reverse()
+fig, ax = plt.subplots(1, 3, figsize=(9, 3), dpi=100, sharey=False)
+fig.canvas.set_window_title("'homeless' posts within 14 days on Reddit")
 
-#this isn't exactly dynaming scaling... ^^;
-comments = [x*5 for x in comments]
+ax[0].set_title("number of posts")
+ax[0].bar(names, num_of_posts, color=my_colors)
 
-plt.style.use('seaborn')
-fig, ax = plt.subplots()
+ax[1].set_title("avg post score")
+ax[1].bar(names, avg_score, color=my_colors)
 
-count = len(scores)
+ax[2].set_title("avg number of comments")
+ax[2].bar(names, avg_num_of_comments, color=my_colors)
 
-for i in range(count):
-    ax.scatter(dates[i], scores[i], s=comments[i], c="red")
-
-ax.set_ylabel('Post Score', fontsize='medium')
-ax.set_title(f"Posts containing '{keyword}' on r/{sub}", fontsize='x-large')
-
-#want to set this range dynamically
-ax.set_ylim([-10, 300])
-
-plt.subplots_adjust(bottom=0.15)
-plt.xticks(rotation=45, fontsize='7')
 plt.show()
