@@ -12,9 +12,7 @@ num_of_posts = []
 avg_score = []
 avg_num_of_comments = []
 
-for file in list_of_files:
-    df = pd.read_csv(file)
-    meta_df.append(df)
+meta_df = [pd.read_csv(file) for file in list_of_files]
 
 for i in range(len(meta_df)):
     num_of_posts.append(len(meta_df[i]))
