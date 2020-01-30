@@ -10,8 +10,35 @@ script, filename = argv
 sub = str(filename.split('-')[0])
 
 #read it into a data frame
-df = pd.read_csv(filename)
+meta_df = pd.read_csv(filename)
 
+#count the number of unique keywords found in the file
+keyword_count = len(meta_df['Keyword'].unique())
+
+#make a list of the unique values
+keyword = meta_df['Keyword'].unique()
+
+
+#display the unique values, and ask the user which ones they want to compare
+print(f"""
+    (!) Data available for {keyword_count} unique search term(s).
+        Please select from the below options: \n""")
+
+for count, item in enumerate(keyword):
+    print(f"\tOption {count} - {item}")
+
+sel1 = int(input("\n > Input the option number of your first selection: "))
+sel2 = int(input(" > Input the option number of your second selection: "))
+
+#split the results into two distinct data frames
+sel1_df = meta_df[meta_df['Keyword'] == keyword[sel1]]
+sel2_df = meta_df[meta_df['Keyword'] == keyword[sel2]]
+
+
+
+
+#reworking this tomorrow
+"""
 #days since posting
 now = pd.to_datetime('today')
 df['Date'] = pd.to_datetime(df['Date'])
@@ -49,4 +76,4 @@ ax.set_ylabel('Values')
 
 ax.legend()
 fig.tight_layout()
-plt.show()
+plt.show()"""
