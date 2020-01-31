@@ -75,6 +75,8 @@ for item in choice_list:
 #days since posting
 now = pd.to_datetime('today')
 
+bar_colors = ['#024059','#6593A6','#592F20','#D9B1A3']
+
 
 """
 TODO:
@@ -112,16 +114,23 @@ for key in meta_dict:
 
     """
     MATPLOTLIB START
+
+    TODO:
+    Update ylim to be dynamic with the max value.
     """
     plt.style.use('seaborn')
-    fig, ax = plt.subplots(figsize=(4, 4))
+    fig, ax = plt.subplots(figsize=(5, 5))
 
-    fig.canvas.set_window_title(key)
+    fig.canvas.set_window_title(f'* {key} on r/{sub} *')
 
-    x_val = ['# of Posts', 'Avg. Score', 'Avg. Comments']
-    y_val = [knum_of_posts, kavg_score, kavg_comments]
+    x_val = ['Avg. Score', 'Highest Score', 'Avg. Comments', 'Most Comments']
+    y_val = [kavg_score, kmax_score, kavg_comments, kmax_comments]
 
+    ax.bar(x_val, y_val, color=bar_colors)
+    ax.set_title(f'[results based on {knum_of_posts} posts]', loc='right', fontsize=10, c='gray')
+    ax.set_ylabel('Values')
+    plt.xticks(fontsize=10)
+    plt.ylim(0, 300)
     plt.tight_layout()
-    ax.bar(x_val, y_val)
 
 plt.show()
