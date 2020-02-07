@@ -3,12 +3,6 @@ import pandas as pd
 import numpy as np
 from sys import argv
 
-"""
-TODO:
-Rework to avoid this warning.
-"""
-pd.options.mode.chained_assignment = None
-
 #pass the name of the file for analysis
 script, filename = argv
 
@@ -68,7 +62,7 @@ else:
 #assign a df for every keyword to a dictionary
 meta_dict = {}
 for item in choice_list:
-    meta_dict[item] = meta_df[meta_df['Keyword'] == item]
+    meta_dict[item] = meta_df[meta_df['Keyword'] == item].copy()
 
 
 
